@@ -442,7 +442,7 @@
 <div aria-labelledby="modalTitle" aria-modal="true" class="modal" id="modal" role="dialog"><div class="dialog"><button aria-label="Chiudi" class="close">×</button><div class="kicker" id="modalType"></div><h3 id="modalTitle"></h3><p id="modalDesc"></p><div class="credits" id="modalCredits"></div><div class="platforms" id="modalPlatforms"></div><div class="note" id="platformNote">I collegamenti disponibili rimandano alle pagine ufficiali di ascolto. Per gli altri album inserirò i link appena verificati.</div></div></div>
 <script>
 const listenLinks={
-'BLOOM':[{label:'Ascolta Bloom di Jesuton su Spotify',url:'https://open.spotify.com/intl-it/track/6bFL9bJWdmY1IvRXbX4KJf?autoplay_ok=1'}],
+'BLOOM':[{label:'Ascolta Bloom di Jesuton su Spotify',url:'https://open.spotify.com/intl-it/track/6bFL9bJWdmY1IvRXbX4KJf?autoplay_ok=1',platform:'Spotify'},{label:'Ascolta Bloom di Jesuton su Apple Music',url:'https://music.apple.com/gb/album/bloom-ep/1680197569',platform:'Apple Music'},{label:'Jesuton su Amazon Music',url:'https://music.amazon.com.br/artists/B008ILQY08/jesuton',platform:'Amazon Music'},{label:'Jesuton sul canale ufficiale YouTube',url:'https://www.youtube.com/channel/UCtvWeAdg7aGe-V2ANh4M3cw',platform:'YouTube'}],
 'NUDO':[{label:'Ascolta su Bandcamp',url:'https://abeatrecords.bandcamp.com/album/nudo'}],
 'Jumble':[{label:'Ascolta su Apple Music',url:'https://music.apple.com/us/album/jumble/1113632843'}],
 'Aprender a Ser Rio':[{label:'Ascolta su Apple Music',url:'https://music.apple.com/us/album/aprender-a-ser-rio/1518064713'}],
@@ -469,8 +469,8 @@ document.querySelectorAll('.tile').forEach(card=>card.addEventListener('click',(
  const direct=listenLinks[title]||[];
  direct.forEach(item=>{const a=document.createElement('a');a.href=item.url;a.textContent=item.label;a.target='_blank';a.rel='noopener noreferrer';platformBox.appendChild(a)});
  const query=title+' '+(card.dataset.artist||'Massimo Valentini');
- searchPlatforms.forEach(platform=>{const a=document.createElement('a');a.href=platform.url(query);a.textContent='Cerca su '+platform.name;a.target='_blank';a.rel='noopener noreferrer';platformBox.appendChild(a)});
- document.getElementById('platformNote').textContent=direct.length?'Il primo collegamento è una pagina diretta verificata. Gli altri aprono la ricerca dell’album sulla piattaforma: la disponibilità può variare.':'Questi collegamenti aprono la ricerca dell’album sulle piattaforme; non indicano che il disco sia presente in ciascun catalogo.';
+ searchPlatforms.filter(platform=>!direct.some(item=>item.platform===platform.name)).forEach(platform=>{const a=document.createElement('a');a.href=platform.url(query);a.textContent='Cerca su '+platform.name;a.target='_blank';a.rel='noopener noreferrer';platformBox.appendChild(a)});
+ document.getElementById('platformNote').textContent=title==='BLOOM'?'Spotify e Apple Music aprono Bloom; Amazon Music e YouTube portano ai profili ufficiali di Jesuton. Le altre piattaforme aprono la ricerca di Bloom di Jesuton.':direct.length?'Il primo collegamento è una pagina diretta verificata. Gli altri aprono la ricerca dell’album sulla piattaforma: la disponibilità può variare.':'Questi collegamenti aprono la ricerca dell’album sulle piattaforme; non indicano che il disco sia presente in ciascun catalogo.';
  modal.classList.add('open');
 }));
 document.querySelector('.close').addEventListener('click',()=>modal.classList.remove('open'));
